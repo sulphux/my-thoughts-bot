@@ -48,9 +48,7 @@ async def save_thought(update: Update, context: ContextTypes.DEFAULT_TYPE):
     c.execute("INSERT INTO thoughts (text, summary, category) VALUES (?, ?, ?)", (text, summary, category))
     conn.commit()
     conn.close()
-    await update.message.reply_text(f"✔️ Zapisane!
-Kategoria: {category}
-Streszczenie: {summary}")
+    await update.message.reply_text(f"✔️ Zapisane! \nKategoria: {category} \nStreszczenie: {summary}")
 
 async def list_thoughts(update: Update, context: ContextTypes.DEFAULT_TYPE):
     conn = sqlite3.connect(DB_FILE)
