@@ -56,11 +56,10 @@ async def list_thoughts(update: Update, context: ContextTypes.DEFAULT_TYPE):
     c.execute("SELECT id, summary, category, date FROM thoughts ORDER BY date DESC LIMIT 5")
     rows = c.fetchall()
     conn.close()
-    response = "📚 Ostatnie myśli:
-"
+    response = "📚 Ostatnie myśli:\n"
     for r in rows:
-        response += f"{r[0]}. [{r[2]}] {r[1]} ({r[3]})
-"
+        response += f"{r[0]}. [{r[2]}] {r[1]} ({r[3]})\n"
+
     await update.message.reply_text(response)
 
 def main():
