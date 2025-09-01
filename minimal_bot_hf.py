@@ -11,13 +11,18 @@ DB_FILE = "thoughts.db"
 async def summarize_and_categorize(text: str) -> (str, str):
     headers = {"Authorization": f"Bearer {HF_TOKEN}"}
     summarize_prompt = f"Streść: {text}"
-    category_prompt = f"Przypisz kategorię: {text} (projekt, nauka, osobiste, praca, technologia, inspiracja, inne)"
-
-    # Streszczenie
-    payload = {"inputs": summarize_prompt, "parameters": {"max_new_tokens": 30}}
     url = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1"
+    payload = {"inputs": summarize_prompt, "parameters": {"max_new_tokens": 30}}
     response = requests.post(url, headers=headers, json=payload)
-    out_summary = response.json()[0]['generated_text'].strip()
+    
+    print("## HF API status:", response.status_code)
+    print("## HF API body:", response.text)
+    try:
+        output = response.json()
+        out_summary = output[0]['generated_text'].strip()
+    except Exception as e:
+        print("Błąd dekodowania HF (summary):", e)
+        out_summary = text[:50] + "..." if len(text) > 50 else text
 
     # Kategoria
     payload_cat = {"inputs": category_prompt, "parameters": {"max_new_tokens": 10}}
