@@ -63,7 +63,10 @@ async def list_thoughts(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(response)
 
 def main():
-    app = Application.builder().token("TU_WSTAW_TOKEN_TELEGRAM").build()
+    TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "")
+    if not TELEGRAM_TOKEN:
+        raise ValueError("Brak zmiennej środowiskowej TELEGRAM_TOKEN!")
+    app = Application.builder().token(TELEGRAM_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CommandHandler("list", list_thoughts))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, save_thought))
