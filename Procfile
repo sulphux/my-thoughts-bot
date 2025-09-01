@@ -1,1 +1,1 @@
-python minimal_bot_hf.py
+web: python minimal_bot_hf.py
